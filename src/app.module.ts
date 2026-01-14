@@ -10,6 +10,7 @@ import { GamesModule } from './games/games.module';
 import { BannersModule } from './banners/banners.module';
 import { DigiflazzModule } from './digiflazz/digiflazz.module';
 import { TransactionModule } from './transaction/transaction.module';
+import { ListPacketModule } from './list-packet/list-packet.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -30,6 +31,7 @@ import { AppService } from './app.service';
     BannersModule,
     DigiflazzModule,
     TransactionModule,
+    ListPacketModule,
   ],
   controllers: [AppController],
   providers: [AppService],
