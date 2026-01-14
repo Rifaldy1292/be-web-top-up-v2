@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  username     String        @unique
+  email        String        @unique
+  password     String
+  phoneNumber  String?       @map("phone_number")
+  role         String        @default("user")
+  refreshToken String?       @map("refresh_token")
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  transactions Transaction[]
+
+  @@map("users")
+}
+
+model ListGame {
+  id            Int          @id @default(autoincrement())
+  gameName      String       @map("game_name")
+  slug          String       @unique
+  urlGamesImage String       @map("url_games_image")
+  urlGameBanner String       @map("url_game_banner")
+  status        Boolean      @default(true)
+  listPackets   ListPacket[]
+
+  @@map("list_games")
+}
+
+model ListPacket {
+  id     Int      @id @default(autoincrement())
+  name   String
+  price  Float
+  gameId Int      @map("game_id")
+  game   ListGame @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@map("list_packets")
+}
+
+model Banner {
+  id       Int    @id @default(autoincrement())
+  name     String
+  imageUrl String @map("image_url")
+
+  @@map("banners")
+}
+
+model ProductDigiflazz {
+  buyerSkuCode        String  @id @unique @map("buyer_sku_code")
+  productName         String  @map("product_name")
+  category            String
+  brand               String
+  type                String
+  sellerName          String  @map("seller_name")
+  price               Float
+  stock               Int     @default(0)
+  buyerProductStatus  Boolean @default(true) @map("buyer_product_status")
+  sellerProductStatus Boolean @default(true) @map("seller_product_status")
+  desc                String  @db.Text
+
+  @@map("product_digiflazz")
+}
+
+enum TransactionStatus {
+  PENDING
+  SETTLEMENT
+  EXPIRE
+  CANCEL
+}
+
+model Transaction {
+  id            Int               @id @default(autoincrement())
+  orderId       String            @unique @map("order_id")
+  amount        Float
+  status        TransactionStatus @default(PENDING)
+  paymentMethod String            @map("payment_method")
+  sku           String?           // Product SKU
+  customerNo    String?           @map("customer_no") // Game ID / Target
+  userId        Int?              @map("user_id")
+  user          User?             @relation(fields: [userId], references: [id])
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  @@map("transactions")
+}
