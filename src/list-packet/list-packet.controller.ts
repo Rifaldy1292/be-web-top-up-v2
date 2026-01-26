@@ -22,6 +22,10 @@ export class ListPacketController {
   create(@Body() createListPacketDto: CreateListPacketDto) {
     return this.listPacketService.create(createListPacketDto);
   }
+  @Get('game/:gameId')
+  findByGame(@Param('gameId') gameId: number) {
+    return this.listPacketService.findByGameId(+gameId);
+  }
 
   @Get()
   findAll() {

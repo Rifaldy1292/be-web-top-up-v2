@@ -12,3 +12,12 @@ export class CreateGameDto {
   @IsBooleanString()
   status: string;
 }
+
+export class Result {
+  success: boolean;
+  game?: string;
+  id?: number | string;
+  server?: string | number;
+  name?: string;
+  message?: string;
+}

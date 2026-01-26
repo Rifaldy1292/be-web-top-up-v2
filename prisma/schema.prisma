@@ -29,6 +29,7 @@ model ListGame {
   urlGamesImage String       @map("url_games_image")
   urlGameBanner String       @map("url_game_banner")
   status        Boolean      @default(true)
+  category      String
   listPackets   ListPacket[]
 
   @@map("list_games")

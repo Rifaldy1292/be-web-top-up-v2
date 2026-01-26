@@ -21,6 +21,16 @@ export class ListPacketService {
     });
   }
 
+  async findByGameId(gameId: number) {
+    return this.prisma.listPacket.findMany({
+      where: {
+        gameId: gameId, // field gameId di tabel list_packet
+      },
+      orderBy: {
+        price: 'desc', // optional
+      },
+    });
+  }
   findOne(id: number) {
     return this.prisma.listPacket.findUnique({
       where: { id },
