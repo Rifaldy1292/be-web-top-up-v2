@@ -73,6 +73,39 @@ export class DigiflazzService {
             desc: product.desc,
           },
         });
+        //cek apakah game nya ada
+        let existingGame = await this.prisma.listGame.findFirst({
+          where: {
+            gameName: product.brand,
+          },
+        });
+
+        if (!existingGame) {
+          existingGame = await this.prisma.listGame.create({
+            data: {
+              gameName: product.brand,
+              slug: product.brand.toLowerCase().replace(/\s+/g, '-'),
+              urlGamesImage: '',
+              urlGameBanner: '',
+              category: product.category,
+              status: true,
+            },
+          });
+        }
+        await this.prisma.listPacket.upsert({
+          where: { product_digiflazz_id: product.buyer_sku_code },
+          update: {
+            name: product.product_name,
+            product_digiflazz_id: product.buyer_sku_code,
+            price: product.price,
+          },
+          create: {
+            name: product.product_name,
+            gameId: existingGame.id,
+            product_digiflazz_id: product.buyer_sku_code,
+            price: product.price,
+          },
+        });
       }
       this.logger.debug(`Updated ${products.length} products from Digiflazz`);
     } catch (error) {
@@ -94,6 +127,7 @@ export class DigiflazzService {
           buyer_sku_code: buyerSku,
           customer_no: customerNo,
           ref_id: refId,
+          testing: process.env.NODE_ENV !== 'production',
           sign,
         }),
       );
