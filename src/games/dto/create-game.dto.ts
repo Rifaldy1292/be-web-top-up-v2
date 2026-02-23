@@ -1,4 +1,9 @@
-import { IsBooleanString, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsBooleanString,
+  IsOptional,
+} from 'class-validator';
 
 export class CreateGameDto {
   @IsString()
@@ -9,15 +14,19 @@ export class CreateGameDto {
   @IsNotEmpty()
   slug: string;
 
+  @IsString()
+  @IsNotEmpty()
+  category: string;
+
   @IsBooleanString()
   status: string;
-}
 
-export class Result {
-  success: boolean;
-  game?: string;
-  id?: number | string;
-  server?: string | number;
-  name?: string;
-  message?: string;
+  // diisi controller (hasil upload)
+  @IsOptional()
+  @IsString()
+  urlGamesImage?: string;
+
+  @IsOptional()
+  @IsString()
+  urlGameBanner?: string;
 }
