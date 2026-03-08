@@ -42,7 +42,7 @@ model ListPacket {
   price  Float
   gameId Int      @map("game_id")
   game   ListGame @relation(fields: [gameId], references: [id], onDelete: Cascade)
-
+  isActive Boolean @default(true)
   @@map("list_packets")
 }
 
@@ -96,4 +96,14 @@ model Transaction {
   packetStatus  PacketStatus?     @map("packet_status")
 
   @@map("transactions")
+}
+
+model Maintenance {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isActive Boolean @default(false)
+  @@map("maintenances")
 }

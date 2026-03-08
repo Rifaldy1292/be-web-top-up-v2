@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateListPacketDto {
   @IsNotEmpty()
@@ -12,4 +12,8 @@ export class CreateListPacketDto {
   @IsNotEmpty()
   @IsNumber()
   gameId: number;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  isActive: boolean;
 }

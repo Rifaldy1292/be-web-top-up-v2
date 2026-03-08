@@ -35,6 +35,8 @@ export class TransactionService {
     const amountRilOnDb = await this.prisma.listPacket.findFirst({
       where: { product_digiflazz_id: dto.sku },
     });
+    console.log('ini 1', amountRilOnDb);
+    console.log('ini 2', dto.amount);
     if (amountRilOnDb) {
       if (amountRilOnDb.price != dto.amount) {
         throw new BadRequestException(

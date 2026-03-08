@@ -13,6 +13,7 @@ import { TransactionModule } from './transaction/transaction.module';
 import { ListPacketModule } from './list-packet/list-packet.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { MaintenenceModule } from './maintenence/maintenence.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { AppService } from './app.service';
     DigiflazzModule,
     TransactionModule,
     ListPacketModule,
+    MaintenenceModule,
   ],
   controllers: [AppController],
   providers: [AppService],

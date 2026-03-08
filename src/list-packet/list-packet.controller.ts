@@ -6,18 +6,16 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
 } from '@nestjs/common';
 import { ListPacketService } from './list-packet.service';
 import { CreateListPacketDto } from './dto/create-list-packet.dto';
 import { UpdateListPacketDto } from './dto/update-list-packet.dto';
-import { AccessTokenGuard } from '../common/guards/accessToken.guard';
 
 @Controller('list-packet')
 export class ListPacketController {
   constructor(private readonly listPacketService: ListPacketService) {}
 
-  @UseGuards(AccessTokenGuard)
+  // @UseGuards(AccessTokenGuard)
   @Post()
   create(@Body() createListPacketDto: CreateListPacketDto) {
     return this.listPacketService.create(createListPacketDto);
@@ -37,7 +35,7 @@ export class ListPacketController {
     return this.listPacketService.findOne(+id);
   }
 
-  @UseGuards(AccessTokenGuard)
+  // @UseGuards(AccessTokenGuard)
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -46,7 +44,7 @@ export class ListPacketController {
     return this.listPacketService.update(+id, updateListPacketDto);
   }
 
-  @UseGuards(AccessTokenGuard)
+  // @UseGuards(AccessTokenGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.listPacketService.remove(+id);
