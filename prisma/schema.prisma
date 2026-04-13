@@ -28,7 +28,7 @@ model ListGame {
   slug          String       @unique
   urlGamesImage String       @map("url_games_image")
   urlGameBanner String       @map("url_game_banner")
-  status        Boolean      @default(true)
+  status        Boolean      @default(false)
   category      String
   listPackets   ListPacket[]
 
