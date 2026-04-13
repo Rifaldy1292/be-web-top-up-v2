@@ -78,7 +78,11 @@ export class GamesService {
   }
 
   async findAll() {
-    const games = await this.prisma.listGame.findMany();
+    const games = await this.prisma.listGame.findMany({
+      where: {
+        status: true,
+      },
+    });
     const popularGames = games.slice(0, 3);
     return {
       data: games,
