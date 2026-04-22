@@ -27,7 +27,7 @@ export class ListPacketService {
         gameId: gameId, // field gameId di tabel list_packet
       },
       orderBy: {
-        price: 'desc', // optional
+        price: 'asc', // optional
       },
     });
   }

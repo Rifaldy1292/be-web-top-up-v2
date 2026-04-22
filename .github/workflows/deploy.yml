@@ -1,0 +1,63 @@
+name: Deploy Backend
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Deploy Backend via SSH (password)
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          script: |
+            /root/be-web-top-up-v2
+
+             # baca commit terakhir yang sukses
+             if [ -f .last_success ]; then
+               LAST_SUCCESS=$(cat .last_success)
+             else
+               LAST_SUCCESS=$(git rev-parse HEAD)
+               echo $LAST_SUCCESS > .last_success
+             fi
+
+             rollback() {
+               echo "🚨 Rollback ke commit terakhir yang sukses..."
+               git reset --hard $LAST_SUCCESS
+               echo "💾 Jalankan prisma generate & db push setelah rollback..."
+               npx prisma generate || { echo "🚨 Prisma generate setelah rollback gagal!"; exit 1; }
+               npx prisma db push --accept-data-loss || { echo "🚨 Prisma db push setelah rollback gagal!"; exit 1; }
+               echo "🔄 Restart PM2..."
+               pm2 restart be-lms || pm2 start ecosystem.config.js 
+               exit 1
+             }
+
+             echo "🔄 Pull update dari master..."
+             git pull origin master || rollback
+
+             echo "📦 Install dependency..."
+             npm install || rollback
+
+             echo "💻 Generate Prisma Client..."
+             npx prisma generate || rollback
+
+             echo "💾 Push Prisma schema..."
+             npx prisma db push --accept-data-loss || rollback
+
+             echo "🏗 Build project..."
+             npm run build || rollback
+
+             echo "🔄 Restart PM2..."
+             pm2 restart be-lms || pm2 start ecosystem.config.js 
+
+             echo "✅ Update commit terakhir yang sukses..."
+             git rev-parse HEAD > .last_success
