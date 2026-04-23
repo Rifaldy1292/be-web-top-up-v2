@@ -47,7 +47,7 @@ export class TransactionService {
       throw new BadRequestException('SKU tidak ditemukan');
     }
     //naikan harga 5% untuk default
-    const finalPrice = dto.amount * 1.05;
+    const finalPrice = Math.floor(dto.amount * 1.05);
 
     await this.prisma.productDigiflazz.findFirst({
       where: { buyerSkuCode: dto.sku },
