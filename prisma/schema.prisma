@@ -17,7 +17,7 @@ model User {
   refreshToken String?       @map("refresh_token")
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
-  transactions Transaction[]
+
 
   @@map("users")
 }
