@@ -90,7 +90,7 @@ model Transaction {
   sku           String?           // Product SKU
   customerNo    String?           @map("customer_no") // Game ID / Target
   userId        Int?              @map("user_id")
-  user          User?             @relation(fields: [userId], references: [id])
+  user          Int?             
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
   packetStatus  PacketStatus?     @map("packet_status")
