@@ -166,9 +166,20 @@ export class TransactionService {
     if (!transaction) {
       throw new NotFoundException('Transaksi tidak ditemukan');
     }
+    let product;
+    if (!transaction.sku) {
+      product = {};
+    } else {
+      product = await this.prisma.listPacket.findFirst({
+        where: {
+          product_digiflazz_id: transaction.sku,
+        },
+      });
+    }
 
     return {
       transaction,
+      product,
     };
   }
 }
