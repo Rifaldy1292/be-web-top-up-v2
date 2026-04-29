@@ -93,13 +93,13 @@ export class TransactionService {
   async handleNotification(notification: any) {
     this.logger.log(`Midtrans Notification: ${JSON.stringify(notification)}`);
     try {
-      const statusResponse = await this.snap.transaction.status(
-        notification.order_id,
-      );
-      console.log(statusResponse);
-      const orderId = statusResponse.order_id;
-      const transactionStatus = statusResponse.transaction_status;
-      const fraudStatus = statusResponse.fraud_status;
+      // const statusResponse = await this.snap.transaction.status(
+      //   notification.order_id,
+      // );
+      // console.log(statusResponse);
+      const orderId = notification.order_id;
+      const transactionStatus = notification.transaction_status;
+      const fraudStatus = notification.fraud_status;
       // Default status
       let dbStatus: 'PENDING' | 'SETTLEMENT' | 'EXPIRE' | 'CANCEL' = 'PENDING';
 
