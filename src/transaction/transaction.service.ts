@@ -94,7 +94,7 @@ export class TransactionService {
     this.logger.log(`Midtrans Notification: ${JSON.stringify(notification)}`);
     try {
       const statusResponse = await this.snap.transaction.status(
-        notification.orderId,
+        notification.order_id,
       );
       console.log(statusResponse);
       const orderId = statusResponse.order_id;
